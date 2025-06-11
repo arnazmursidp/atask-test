@@ -1,5 +1,5 @@
 import './App.css'
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import ListSection from './components/ListSection'
 import SearchSection from './components/SearchSection'
 
