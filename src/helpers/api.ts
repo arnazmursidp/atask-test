@@ -1,4 +1,5 @@
 import axios from "axios";
+import type { RepositoryResponse, UsernameResponse } from "./types";
 
 const BASE_URL = 'https://api.github.com';
 
@@ -15,15 +16,15 @@ const instance = () => {
     (error) => Promise.reject(error)
   )
   api.interceptors.response.use(
-    (response) => response.data,
+    (response) => response,
     (error) => Promise.reject(error.response.data)
   )
   return api
 }
 
 const apiList = {
-  getUsernames: (username: string) => instance().get(`/search/users?per_page=10&page=1&q=${username}`),
-  getReposByUsername: (username: string) => instance().get(`/users/${username}/repos`),
+  getUsernames: (username: string) => instance().get<UsernameResponse>(`/search/users?per_page=10&page=1&q=${username}`),
+  getReposByUsername: (username: string) => instance().get<RepositoryResponse>(`/users/${username}/repos`),
 }
 
 export default apiList

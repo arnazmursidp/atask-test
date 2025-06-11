@@ -16,7 +16,7 @@ export const useFetchUsername = () => {
     queryKey: QUERY_USERNAME_KEY,
     queryFn: async () => {
       const response = await apiList.getUsernames(username)
-      return response
+      return response.data
     }
   })
 
@@ -25,7 +25,7 @@ export const useFetchUsername = () => {
     queryKey: QUERY_REPOSITORY_KEY,
     queryFn: async () => {
       const response = await apiList.getReposByUsername(selectedUsername)
-      return response
+      return response.data
     }
   })
 
