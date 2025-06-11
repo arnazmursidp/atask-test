@@ -6,6 +6,9 @@ const instance = () => {
   const api = axios.create({
     baseURL: BASE_URL,
     timeout: 1000,
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
   });
   api.interceptors.request.use(
     (config) => config,
@@ -19,7 +22,7 @@ const instance = () => {
 }
 
 const apiList = {
-  getUsernames: (username: string) => instance().get(`/users/${username}`),
+  getUsernames: (username: string) => instance().get(`/search/users?per_page=10&page=1&q=${username}`),
   getReposByUsername: (username: string) => instance().get(`/users/${username}/repos`),
 }
 

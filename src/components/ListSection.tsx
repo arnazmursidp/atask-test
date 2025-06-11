@@ -1,23 +1,23 @@
-import React, { use } from 'react'
+import { useFetchUsername } from '../hooks/useFetchUsername'
 
-type Props = {}
-import users from '../__mock__/username_response.json'
-import repos from '../__mock__/repository_response.json'
+const ListSection = () => {
+  const { usernameList, username } = useFetchUsername()
 
-const ListSection = (props: Props) => {
+  const { data: usernames, isLoading, isFetching } = usernameList
   return (
+    isLoading || isFetching ? <p>loading</p> : 
     <>
-      <p>Showing users for "Exampleuser"</p>
-      {users.map((user) => (
-        <div key={user.user.login}>
-          {user.user.login}
-          {repos?.map((repo) => (
+      <p>Showing users for {username}</p>
+      {usernames?.items?.map((user) => (
+        <div key={user.login}>
+          {user.login}
+          {/* {repos?.map((repo) => (
             <div key={repo.name} style={{ backgroundColor: 'grey' }}>
               {repo.name} <br />
               {repo.description} <br />
               {repo.stargazers_count}
             </div>
-          ))}
+          ))} */}
         </div>
       ))}
     </>
