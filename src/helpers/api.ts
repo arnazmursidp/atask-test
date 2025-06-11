@@ -1,11 +1,30 @@
 import axios from "axios";
+import type { RepositoryResponse, UsernameResponse } from "./types";
 
-const BASE_URL = 'https://developer.github.com/v3/';
+const BASE_URL = 'https://api.github.com';
 
-const instance = axios.create({
-  baseURL: BASE_URL,
-  timeout: 1000,
-  headers: {'X-Custom-Header': 'foobar'}
-});
+const instance = () => {
+  const api = axios.create({
+    baseURL: BASE_URL,
+    timeout: 1000,
+    headers: {
+      'X-GitHub-Api-Version': '2022-11-28'
+    }
+  });
+  api.interceptors.request.use(
+    (config) => config,
+    (error) => Promise.reject(error)
+  )
+  api.interceptors.response.use(
+    (response) => response,
+    (error) => Promise.reject(error.response.data)
+  )
+  return api
+}
 
-export default instance
+const apiList = {
+  getUsernames: (username: string) => instance().get<UsernameResponse>(`/search/users?per_page=10&page=1&q=${username}`),
+  getReposByUsername: (username: string) => instance().get<RepositoryResponse>(`/users/${username}/repos`),
+}
+
+export default apiList

@@ -1,11 +1,19 @@
-type Props = {}
+import { useFetchUsername } from "../hooks/useFetchUsername"
 
-const SearchSection = (props: Props) => {
+const SearchSection = () => {
+  const { setUsername, username, setIsSearchEnabled } = useFetchUsername();
+  
   return (
-    <>
-      <input placeholder="Enter Username" />
-      <button type="submit" name="search_username">Search</button>
-    </>
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      setIsSearchEnabled(true);
+    }}>
+      <input placeholder="Enter Username" value={username} onChange={(event) => {
+        setIsSearchEnabled(false);
+        setUsername(event.target.value)
+      }} />
+      <button type="submit">Search</button>
+    </form>
   )
 }
 

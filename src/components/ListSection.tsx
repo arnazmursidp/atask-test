@@ -1,24 +1,32 @@
-import React, { use } from 'react'
+import { useFetchUsername } from '../hooks/useFetchUsername'
 
-type Props = {}
-import users from '../__mock__/username_response.json'
-import repos from '../__mock__/repository_response.json'
+const ListSection = () => {
+  const { usernameList, username, repositoryList, setSelectedUsername, setIsRepoSearchEnabled } = useFetchUsername()
 
-const ListSection = (props: Props) => {
+  const { data: usernames, isLoading: isLoadingUsername, isFetching: isFetchingUsername } = usernameList
+  const { data: repositories, isLoading: isLoadingRepositories, isFetching: isFetchingRepositories } = repositoryList
+
   return (
+    isLoadingUsername || isFetchingUsername ? <p>loading</p> : 
     <>
-      <p>Showing users for "Exampleuser"</p>
-      {users.map((user) => (
-        <div key={user.user.login}>
-          {user.user.login}
-          {repos?.map((repo) => (
+      <p>Showing users for {username}</p>
+      {usernames?.items?.map((user) => (
+        <>
+          <button key={user.login} onClick={() => {
+            setIsRepoSearchEnabled(false)
+            setSelectedUsername(user.login)
+            setIsRepoSearchEnabled(true)
+          }}>
+            {user.login}
+          </button>
+          {isLoadingRepositories || isFetchingRepositories ? <p>Loading Repositories</p> : repositories?.map((repo) => (
             <div key={repo.name} style={{ backgroundColor: 'grey' }}>
               {repo.name} <br />
               {repo.description} <br />
               {repo.stargazers_count}
             </div>
           ))}
-        </div>
+        </>
       ))}
     </>
   )
