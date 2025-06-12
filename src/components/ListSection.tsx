@@ -52,10 +52,10 @@ const ListSection = () => {
   if (!usernames) return null
 
   return (
-    <>
+    <div style={{ borderRadius: '8px', maxWidth: '880px', margin: '0 auto', background: 'white', marginTop: '-72px', padding: '16px', paddingBottom: '32px' }}>
       {contextHolder}
-      {isLoadingUsername || isFetchingUsername ? <p>loading</p> : <Collapse items={collapseItems} accordion onChange={onChangeCollapse}></Collapse>}
-    </>
+      <Collapse items={collapseItems} accordion onChange={onChangeCollapse}></Collapse>
+    </div>
   )
 }
 
