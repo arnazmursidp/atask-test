@@ -1,46 +1,34 @@
-import { Card, Col, Collapse, Row, type CollapseProps } from 'antd'
-import { StarFilled } from '@ant-design/icons';
+import { Collapse, message, type CollapseProps } from 'antd'
 import { useFetchUsername } from '../hooks/useFetchUsername'
+import { useEffect, useState } from 'react';
+import CardRepository from './CardRepository';
 
 const ListSection = () => {
   const { usernameList, repositoryList, setIsRepoSearchEnabled, setSelectedUsername } = useFetchUsername()
-  const { data: usernames, isLoading: isLoadingUsername, isFetching: isFetchingUsername } = usernameList
-  const { data: repositories, isLoading: isLoadingRepositories, isFetching: isFetchingRepositories } = repositoryList
-
-  const repositoryLayout = () => {
-    return isLoadingRepositories || isFetchingRepositories
-      ? 
-        <p>Loading Repositories</p>
-      :
-        <Row gutter={[8, 8]}>
-          {
-            repositories?.map((repo, index) => (
-              <Col key={index} xs={24} md={8} lg={8}>
-                <Card
-                  style={{ minHeight: '200px' }}
-                  title={<p style={{ marginLeft: '36px' }}>{repo.name}</p>}
-                  extra={
-                  <span>
-                    {repo.stargazers_count}
-                    <StarFilled style={{marginLeft: '8px' }} />
-                  </span>}
-                >
-                  {repo.name} <br />
-                  {repo.description} <br />
-                </Card>
-              </Col>
-            ))
-          }
-      </Row>
-  }
+  const { data: usernames, isLoading: isLoadingUsername, isFetching: isFetchingUsername, isError: isErrorUsername } = usernameList
+  const { data: repositories, isLoading: isLoadingRepositories, isFetching: isFetchingRepositories, isError: isErrorRepository } = repositoryList
   
-  let collapseItems: CollapseProps['items'] = usernames?.items?.map((user, index) => {
-    return {
-      key: `${user.login}-${index}`,
-      label: user.login,
-      children: repositoryLayout()
-    }
-  })
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const [collapseItems, setCollapseItems] = useState<CollapseProps['items']>([{
+    key: 0,
+    label: '',
+    children: <CardRepository isFetchingRepositories={isFetchingRepositories} isLoadingRepositories={isLoadingRepositories} repositories={repositories} />
+  }])
+
+  useEffect(() => {
+    messageApi.error('An error has encountered, please try again later.')
+  }, [isErrorUsername, isErrorRepository])
+
+  useEffect(() => {
+    setCollapseItems(usernames?.items?.map((user, index) => {
+      return {
+        key: `${user.login}-${index}`,
+        label: user.login,
+        children: <CardRepository isFetchingRepositories={isFetchingRepositories} isLoadingRepositories={isLoadingRepositories} repositories={repositories} />
+      }
+    }))
+  }, [usernames, repositories, isFetchingRepositories, isLoadingRepositories])
 
   const onChangeCollapse = (value: string[]) => {
     const selectedUsername = value[0]?.split('-')[0]?.trim() || ''
@@ -48,26 +36,25 @@ const ListSection = () => {
     setIsRepoSearchEnabled(false)
     setSelectedUsername(selectedUsername)
     setIsRepoSearchEnabled(true)
-    collapseItems = collapseItems?.map((item, index) => {
+    setCollapseItems(collapseItems?.map((item, index) => {
       if (index === selectedIndex) {
         return {
           ...item,
-          children: repositoryLayout()
+          children: <CardRepository isFetchingRepositories={isFetchingRepositories} isLoadingRepositories={isLoadingRepositories} repositories={repositories} />
         }
       }
       return {
         ...item,
-        children: null
       }
-    })
+    }))
   }
 
   if (!usernames) return null
 
   return (
-    isLoadingUsername || isFetchingUsername ? <p>loading</p> : 
     <>
-      <Collapse items={collapseItems} accordion onChange={onChangeCollapse}></Collapse>
+      {contextHolder}
+      {isLoadingUsername || isFetchingUsername ? <p>loading</p> : <Collapse items={collapseItems} accordion onChange={onChangeCollapse}></Collapse>}
     </>
   )
 }
