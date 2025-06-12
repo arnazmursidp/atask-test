@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export const useFetchUsername = () => {
   const [username, setUsername] = useState<string>('')
-  const [selectedUsername, setSelectedUsername] = useState<string>('')
+  const [selectedUsername, setSelectedUsername] = useState<string[]>([])
   const [isSearchEnabled, setIsSearchEnabled] = useState<boolean>(false)
   const [isRepoSearchEnabled, setIsRepoSearchEnabled] = useState<boolean>(false)
 
@@ -24,10 +24,12 @@ export const useFetchUsername = () => {
     enabled: isRepoSearchEnabled,
     queryKey: QUERY_REPOSITORY_KEY,
     queryFn: async () => {
-      const response = await apiList.getReposByUsername(selectedUsername)
+      const lastIndex = selectedUsername.length - 1
+      const selectedIndex = Number(selectedUsername[lastIndex].split('-')[1])
+      const response = await apiList.getReposByUsername(selectedUsername[selectedIndex])
       return response.data
     }
   })
 
-  return { usernameList, repositoryList, username, setUsername, setIsSearchEnabled, setIsRepoSearchEnabled, setSelectedUsername }
+  return { usernameList, repositoryList, username, setUsername, setIsSearchEnabled, setIsRepoSearchEnabled, setSelectedUsername, isSearchEnabled }
 }
