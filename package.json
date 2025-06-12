@@ -12,12 +12,14 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@testing-library/react": "^16.3.0",
     "antd": "^5.26.0",
     "axios": "^1.9.0",
     "gh-pages": "^6.3.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-query": "^3.39.3"
+    "react-query": "^3.39.3",
+    "vitest": "^3.2.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

@@ -1,6 +1,6 @@
 import { Card, Col, Row, Spin } from "antd"
 import { StarFilled } from '@ant-design/icons';
-import type { RepositoryResponse } from "../helpers/types";
+import type { RepositoryResponse } from "../api/types";
 
 type Props = {
   isLoadingRepositories: boolean
