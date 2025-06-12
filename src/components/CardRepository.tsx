@@ -22,7 +22,7 @@ const CardRepository = ({ isLoadingRepositories, isFetchingRepositories, reposit
                 title={<p style={{ marginLeft: '36px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', width: '150px' }}>{repo.name}</p>}
                 extra={
                 <span>
-                  <StarFilled style={{marginLeft: '8px' }} />
+                  <StarFilled style={{marginRight: '8px' }} />
                   {repo.stargazers_count}
                 </span>}
               >
