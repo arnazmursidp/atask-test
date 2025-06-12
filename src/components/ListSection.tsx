@@ -5,7 +5,7 @@ import CardRepository from './CardRepository';
 
 const ListSection = () => {
   const { usernameList, repositoryList, setIsRepoSearchEnabled, setSelectedUsername } = useFetchUsername()
-  const { data: usernames, isLoading: isLoadingUsername, isFetching: isFetchingUsername, isError: isErrorUsername } = usernameList
+  const { data: usernames, isError: isErrorUsername } = usernameList
   const { data: repositories, isLoading: isLoadingRepositories, isFetching: isFetchingRepositories, isError: isErrorRepository } = repositoryList
   
   const [messageApi, contextHolder] = message.useMessage();
