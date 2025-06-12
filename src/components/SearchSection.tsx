@@ -7,9 +7,9 @@ type FieldType = {
 
 const SearchSection = () => {
   const [form] = Form.useForm();
-  const { setIsSearchEnabled } = useFetchUsername();
+  const { setIsSearchEnabled, setUsername, username } = useFetchUsername();
 
-  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+  const onFinish: FormProps<FieldType>['onFinish'] = () => {
     setIsSearchEnabled(true);
   };
   
@@ -25,7 +25,12 @@ const SearchSection = () => {
         name="username"
         rules={[{ required: true, message: 'Please input the username!' }]}
       >
-        <Input placeholder="Input username" />
+        <input onChange={(event) => {
+          setIsSearchEnabled(false);
+          setUsername(event.target.value)
+        }}
+        value={username}
+        placeholder="Input username" />
       </Form.Item>
       <Button type="primary" htmlType="submit">Search</Button>
     </Form>
