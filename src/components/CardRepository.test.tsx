@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import CardRepository from './CardRepository' // adjust import as needed
 
 const mockRepositories = [
@@ -24,7 +24,7 @@ describe('CardRepository', () => {
         repositories={undefined}
       />
     )
-    expect(container.querySelector('.ant-spin'))
+    expect(container.querySelector('.ant-spin')).toBeInTheDocument()
 
     render(
       <CardRepository
