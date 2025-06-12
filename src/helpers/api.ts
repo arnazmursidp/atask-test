@@ -23,7 +23,7 @@ const instance = () => {
 }
 
 const apiList = {
-  getUsernames: (username: string) => instance().get<UsernameResponse>(`/search/users?per_page=10&page=1&q=${username}`),
+  getUsernames: (username: string) => instance().get<UsernameResponse>(`/search/users?per_page=20&page=1&q=${username}`),
   getReposByUsername: (username: string) => instance().get<RepositoryResponse>(`/users/${username}/repos`),
 }
 

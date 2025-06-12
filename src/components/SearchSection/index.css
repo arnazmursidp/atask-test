@@ -1,0 +1,27 @@
+header {
+  width: 100%;
+  background-color: bisque;
+  padding: 36px 0px;
+  margin-bottom: 32px;
+}
+
+input {
+  border: none;
+  padding: 16px;
+  width: 280px;
+}
+
+.button {
+  background-color: brown;
+  padding: 25px;
+}
+
+.form {
+  justify-content: center;
+}
+
+.ant-form-item-explain-error {
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+}

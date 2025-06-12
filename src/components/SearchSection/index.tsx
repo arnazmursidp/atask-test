@@ -1,5 +1,6 @@
-import { Button, Form, type FormProps } from "antd";
-import { useFetchUsername } from "../hooks/useFetchUsername"
+import { Button, Form, Spin, type FormProps } from "antd";
+import { useFetchUsername } from "../../hooks/useFetchUsername"
+import './index.css'
 
 type FieldType = {
   username?: string;
@@ -16,12 +17,13 @@ const SearchSection = () => {
   };
   
   return (
-    <>
+    <header>
       <Form
         form={form}
-        layout="vertical"
+        layout="inline"
         onFinish={onFinish}
         autoComplete="off"
+        className="form"
       >
         <Form.Item<FieldType>
           name="username"
@@ -33,13 +35,19 @@ const SearchSection = () => {
               setIsSearchEnabled(false);
               setUsername(event.target.value)
             }}
-            placeholder="Input username"
+            placeholder="Search Github username..."
           />
         </Form.Item>
-        <Button type="primary" htmlType="submit">Search</Button>
+        <Form.Item>
+          <Button className="button" type="primary" htmlType="submit">Search</Button>
+        </Form.Item>
       </Form>
-      {!isLoading && !isFetching && (data?.items?.length ?? 0) > 0 && <p>Showing users for {isSearchEnabled ? username : '...'}</p>}
-    </>
+      <Spin fullscreen spinning={isLoading || isFetching} />
+      {!isLoading && !isFetching && (data?.items?.length ?? 0) > 0
+        ? <p>Showing users for <strong>{isSearchEnabled ? username : '...'}</strong></p>
+        : <div style={{ height: '70px' }}></div>
+      }
+    </header>
   )
 }
 
