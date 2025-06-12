@@ -8,7 +8,7 @@ https://arnazmursidp.github.io/atask-test/
 
 ## Tech Stack
 
-**Client:** React, Ant Design, Vite, Vitest, Typescript
+**Client:** React, Ant Design, Vite, Vitest, Typescript, react-query
 
 ## Run Locally
 
