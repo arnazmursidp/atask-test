@@ -9,13 +9,11 @@ const SearchSection = () => {
   const [form] = Form.useForm();
   const { setIsSearchEnabled, setUsername, username, usernameList, isSearchEnabled } = useFetchUsername();
 
-  const { isLoading, isFetching } = usernameList
+  const { isLoading, isFetching, data } = usernameList
 
   const onFinish: FormProps<FieldType>['onFinish'] = () => {
     setIsSearchEnabled(true);
   };
-
-  console.log(isLoading, isFetching)
   
   return (
     <>
@@ -26,7 +24,6 @@ const SearchSection = () => {
         autoComplete="off"
       >
         <Form.Item<FieldType>
-          label="Username"
           name="username"
           rules={[{ required: true, message: 'Please input the username!' }]}
         >
@@ -41,7 +38,7 @@ const SearchSection = () => {
         </Form.Item>
         <Button type="primary" htmlType="submit">Search</Button>
       </Form>
-      {!isLoading && !isFetching && <p>Showing users for {isSearchEnabled ? username : '...'}</p>}
+      {!isLoading && !isFetching && (data?.items?.length ?? 0) > 0 && <p>Showing users for {isSearchEnabled ? username : '...'}</p>}
     </>
   )
 }
