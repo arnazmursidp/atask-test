@@ -48,9 +48,7 @@ To deploy this project run
 
 #### Documentation
 
-```http
-  https://developer.github.com/v3/
-```
+https://developer.github.com/v3/
 
 ## Feedback
 
