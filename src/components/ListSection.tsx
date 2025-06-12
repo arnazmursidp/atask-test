@@ -1,33 +1,60 @@
+import { Collapse, message, type CollapseProps } from 'antd'
 import { useFetchUsername } from '../hooks/useFetchUsername'
+import { useEffect, useState } from 'react';
+import CardRepository from './CardRepository';
 
 const ListSection = () => {
-  const { usernameList, username, repositoryList, setSelectedUsername, setIsRepoSearchEnabled } = useFetchUsername()
+  const { usernameList, repositoryList, setIsRepoSearchEnabled, setSelectedUsername } = useFetchUsername()
+  const { data: usernames, isLoading: isLoadingUsername, isFetching: isFetchingUsername, isError: isErrorUsername } = usernameList
+  const { data: repositories, isLoading: isLoadingRepositories, isFetching: isFetchingRepositories, isError: isErrorRepository } = repositoryList
+  
+  const [messageApi, contextHolder] = message.useMessage();
 
-  const { data: usernames, isLoading: isLoadingUsername, isFetching: isFetchingUsername } = usernameList
-  const { data: repositories, isLoading: isLoadingRepositories, isFetching: isFetchingRepositories } = repositoryList
+  const [collapseItems, setCollapseItems] = useState<CollapseProps['items']>([{
+    key: 0,
+    label: '',
+    children: <CardRepository isFetchingRepositories={isFetchingRepositories} isLoadingRepositories={isLoadingRepositories} repositories={repositories} />
+  }])
+
+  useEffect(() => {
+    messageApi.error('An error has encountered, please try again later.')
+  }, [isErrorUsername, isErrorRepository])
+
+  useEffect(() => {
+    setCollapseItems(usernames?.items?.map((user, index) => {
+      return {
+        key: `${user.login}-${index}`,
+        label: user.login,
+        children: <CardRepository isFetchingRepositories={isFetchingRepositories} isLoadingRepositories={isLoadingRepositories} repositories={repositories} />
+      }
+    }))
+  }, [usernames, repositories, isFetchingRepositories, isLoadingRepositories])
+
+  const onChangeCollapse = (value: string[]) => {
+    const selectedUsername = value[0]?.split('-')[0]?.trim() || ''
+    const selectedIndex = Number(value[0]?.split('-')[1] || 0)
+    setIsRepoSearchEnabled(false)
+    setSelectedUsername(selectedUsername)
+    setIsRepoSearchEnabled(true)
+    setCollapseItems(collapseItems?.map((item, index) => {
+      if (index === selectedIndex) {
+        return {
+          ...item,
+          children: <CardRepository isFetchingRepositories={isFetchingRepositories} isLoadingRepositories={isLoadingRepositories} repositories={repositories} />
+        }
+      }
+      return {
+        ...item,
+      }
+    }))
+  }
+
+  if (!usernames) return null
 
   return (
-    isLoadingUsername || isFetchingUsername ? <p>loading</p> : 
     <>
-      <p>Showing users for {username}</p>
-      {usernames?.items?.map((user) => (
-        <>
-          <button key={user.login} onClick={() => {
-            setIsRepoSearchEnabled(false)
-            setSelectedUsername(user.login)
-            setIsRepoSearchEnabled(true)
-          }}>
-            {user.login}
-          </button>
-          {isLoadingRepositories || isFetchingRepositories ? <p>Loading Repositories</p> : repositories?.map((repo) => (
-            <div key={repo.name} style={{ backgroundColor: 'grey' }}>
-              {repo.name} <br />
-              {repo.description} <br />
-              {repo.stargazers_count}
-            </div>
-          ))}
-        </>
-      ))}
+      {contextHolder}
+      {isLoadingUsername || isFetchingUsername ? <p>loading</p> : <Collapse items={collapseItems} accordion onChange={onChangeCollapse}></Collapse>}
     </>
   )
 }
