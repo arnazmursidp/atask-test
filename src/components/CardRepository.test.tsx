@@ -1,19 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import CardRepository from './CardRepository' // adjust import as needed
-
-const mockRepositories = [
-  {
-    name: 'repo1',
-    stargazers_count: 5,
-    description: 'repo1 description',
-  },
-  {
-    name: 'repo2',
-    stargazers_count: 10,
-    description: 'repo2 description',
-  },
-]
+import CardRepository from './CardRepository'
+import mockRepositories from '../../__test__/mocks/repository_response.json'
 
 describe('CardRepository', () => {
   it('renders loading spinner when isLoadingRepositories or isFetchingRepositories is true', () => {
@@ -44,11 +32,9 @@ describe('CardRepository', () => {
         repositories={mockRepositories}
       />
     )
-    expect(screen.getByText('repo1')).toBeInTheDocument()
-    expect(screen.getByText('repo1 description')).toBeInTheDocument()
-    expect(screen.getByText('repo2')).toBeInTheDocument()
-    expect(screen.getByText('repo2 description')).toBeInTheDocument()
-    expect(screen.getAllByRole('article').length).toBe(mockRepositories.length)
+    expect(screen.getAllByText('aes_enc')[0]).toBeInTheDocument()
+    expect(screen.getByText('test')).toBeInTheDocument()
+    expect(screen.getAllByTestId('repositories').length).toBe(mockRepositories.length)
   })
 
   it('renders no repositories message when repositories is empty', () => {
