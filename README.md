@@ -44,6 +44,20 @@ To deploy this project run
   yarn deploy
 ```
 
+## Test
+
+To run the test of this project run
+
+```bash
+  yarn test
+```
+
+To see the test coverage run
+
+```bash
+  yarn test:coverage
+```
+
 ## API Reference
 
 #### Documentation
