@@ -44,7 +44,7 @@ const SearchSection = () => {
       </Form>
       <Spin fullscreen spinning={isLoading || isFetching} />
       {!isLoading && !isFetching && (data?.items?.length ?? 0) > 0
-        ? <p>Showing users for <strong>{isSearchEnabled ? username : '...'}</strong></p>
+        ? <p data-testid="username">Showing users for <strong>{isSearchEnabled ? username : '...'}</strong></p>
         : <div style={{ height: '70px' }}></div>
       }
     </header>

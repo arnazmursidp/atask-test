@@ -1,5 +1,5 @@
 import { useQuery } from "react-query"
-import apiList from "../helpers/api";
+import apiList from "../api/api";
 import { useState } from "react";
 
 export const useFetchUsername = () => {

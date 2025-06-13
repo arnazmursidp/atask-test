@@ -1,6 +1,6 @@
 import { Card, Col, Row, Spin } from "antd"
 import { StarFilled } from '@ant-design/icons';
-import type { RepositoryResponse } from "../helpers/types";
+import type { RepositoryResponse } from "../api/types";
 
 type Props = {
   isLoadingRepositories: boolean
@@ -16,7 +16,7 @@ const CardRepository = ({ isLoadingRepositories, isFetchingRepositories, reposit
       <Row gutter={[8, 8]}>
         {
           repositories?.length ?? 0 ? repositories?.map((repo, index) => (
-            <Col key={index} xs={24} md={8} lg={8}>
+            <Col key={index} xs={24} md={8} lg={8} data-testid="repositories">
               <Card
                 style={{ minHeight: '200px' }}
                 title={<p style={{ marginLeft: '36px', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden', width: '150px' }}>{repo.name}</p>}
@@ -26,8 +26,8 @@ const CardRepository = ({ isLoadingRepositories, isFetchingRepositories, reposit
                   {repo.stargazers_count}
                 </span>}
               >
-                {repo.name} <br />
-                {repo.description} <br />
+                <p>{repo.name}</p> <br />
+                <p>{repo.description}</p> <br />
               </Card>
             </Col>
           ))
